@@ -1,7 +1,10 @@
 def parse_input(user_input):
+    user_input = user_input.strip() 
+    if not user_input:               
+        return "", []                
     cmd, *args = user_input.split()
-    cmd = cmd.strip().lower()
-    return cmd, *args
+    return cmd.lower(), args
+
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -16,12 +19,15 @@ def input_error(func):
             return "Give me a name please"
     return inner
 
+
 @input_error
 def add_contact(args, contacts):
         name, phone = args
         contacts[name] = phone
-        return "Contact added."      
+        return "Contact added."   
+  
  
+@input_error 
 def change_username_phone(args, contacts):
     name, phone = args
     if name in contacts:
@@ -30,16 +36,17 @@ def change_username_phone(args, contacts):
     else:
         return "Contact not found."
     
+    
 @input_error
 def phone_username(args, contacts):
     name = args[0]
-    if name in contacts:
-        return contacts[name]
-    else:
-        return "Contact name not found"
-    
+    return contacts[name]
+
+
+@input_error   
 def all_users(args, contacts):
     return contacts
+
 
 def main():
     contacts = {}
@@ -47,7 +54,9 @@ def main():
     while True:
         user_input = input("Enter a command: ")
         command, *args = parse_input(user_input)
-
+        if not command:
+            print("You entered an empty command.")
+            continue
         if command in ["close", "exit"]:
             print("Good bye!")
             break
