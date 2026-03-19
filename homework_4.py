@@ -11,7 +11,7 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except ValueError:
-            if len(args[0]) == 0:
+            if not args or len(args[0]) == 0:
                 return "Give me name and phone please."
             elif len(args[0]) == 1:
                 return "Give me a phone please."
@@ -56,7 +56,7 @@ def main():
     print("Welcome to the assistant bot!")
     while True:
         user_input = input("Enter a command: ")
-        command, *args = parse_input(user_input)
+        command, args = parse_input(user_input)
         if not command:
             print("You entered an empty command.")
             continue
